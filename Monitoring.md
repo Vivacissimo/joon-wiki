@@ -2,7 +2,7 @@
 title: Monitoring
 description: 
 published: true
-date: 2026-06-04T08:10:43.018Z
+date: 2026-06-04T08:12:29.178Z
 tags: 
 editor: markdown
 dateCreated: 2026-06-04T07:48:45.722Z
@@ -20,13 +20,13 @@ dateCreated: 2026-06-04T07:48:45.722Z
 
 ## 사용하는 모니터링 도구 목록
 
-| 구분 | 도구 | 사용 여부 | 역할 | 페이지 주소 |
+| 구분 | 도구 | 사용 여부 | 역할 
 |---|---|---|---|---|
-| 서비스 메시 시각화 | [Kiali](/Monitoring/Kiali/what-is-kiali) | 필수 | 서비스 간 트래픽 흐름, 에러율, 서비스 토폴로지 시각화 | `./Kiali/what-is-kiali` |
-| 메트릭 수집 | [Prometheus](./Prometheus/what-is-prometheus) | 필수 | Istio, Envoy, Kubernetes 메트릭 수집 | `./Prometheus/what-is-prometheus` |
-| 대시보드 | [Grafana](./Grafana/what-is-grafana) | 필수 | Prometheus 메트릭 기반 대시보드 시각화 | `./Grafana/what-is-grafana` |
-| 분산 트레이싱 | [Jaeger](./Jaeger/what-is-jaeger) | 선택 | 서비스 간 요청 흐름 추적 및 병목 구간 분석 | `./Jaeger/what-is-jaeger` |
-| 서비스 메시 메트릭 | [Envoy Metrics](./Envoy/what-is-envoy-metrics) | 필수 측정 대상 | Envoy Sidecar의 요청 수, 에러율, 응답 시간, CPU/Memory 확인 | `./Envoy/what-is-envoy-metrics` |
+| 서비스 메시 시각화 | [Kiali](/Monitoring/kiali/what-is-kiali) | 필수 | 서비스 간 트래픽 흐름, 에러율, 서비스 토폴로지 시각화 
+| 메트릭 수집 | [Prometheus](./Prometheus/what-is-prometheus) | 필수 | Istio, Envoy, Kubernetes 메트릭 수집 
+| 대시보드 | [Grafana](./Grafana/what-is-grafana) | 필수 | Prometheus 메트릭 기반 대시보드 시각화 
+| 분산 트레이싱 | [Jaeger](./Jaeger/what-is-jaeger) | 선택 | 서비스 간 요청 흐름 추적 및 병목 구간 분석
+| 서비스 메시 메트릭 | [Envoy Metrics](./Envoy/what-is-envoy-metrics) | 필수 측정 대상 | Envoy Sidecar의 요청 수, 에러율, 응답 시간, CPU/Memory 확인 
 
 ---
 
