@@ -2,7 +2,7 @@
 title: Git과 연동하기
 description: 
 published: true
-date: 2026-06-04T07:10:43.118Z
+date: 2026-06-04T07:25:51.006Z
 tags: 
 editor: markdown
 dateCreated: 2026-06-04T07:01:01.379Z
@@ -104,7 +104,7 @@ cat ~/services/wikijs/keys/wiki_github.pub
 
 출력된 내용을 복사해둔다.
 
----
+
 
 ## 4. GitHub Deploy Key 등록
 
@@ -306,6 +306,8 @@ Bi-directional
 
 Sync Schedule:
 5 minutes
+
+# 안 적혀있는 건 안 넣어도 됨
 ```
 
 권장 설정:
