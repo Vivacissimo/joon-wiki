@@ -2,7 +2,7 @@
 title: Git과 연동하기
 description: 
 published: true
-date: 2026-06-04T07:25:51.006Z
+date: 2026-06-04T07:29:19.848Z
 tags: 
 editor: markdown
 dateCreated: 2026-06-04T07:01:01.379Z
@@ -280,6 +280,7 @@ Git Storage를 활성화한다.
 Authentication Type:
 ssh
 
+# ssh 방식이라 ssh 주소로 
 Repository URI:
 git@github.com:본인계정/joon-wiki.git
 
@@ -457,6 +458,14 @@ docker exec -it wikijs sh
 ssh -i /etc/wiki/github.pem -T git@github.com
 exit
 ```
+
+**만약 한번도 git에 올린적이 없다면**
+- main 브랜치 없어서 싱크 안될수도 있음
+- git repo에서 README.md 그냥 파일 만들기
+- main브랜치와 리드미 파일 생성 됐는지 확인
+- 다시 wiki 세팅 들어가서 apply하기
+- ACTIONS -> Add Untracked Changes -> Force Sync
+
 
 ---
 
