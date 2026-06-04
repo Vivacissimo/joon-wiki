@@ -2,7 +2,7 @@
 title: Monitoring
 description: 
 published: true
-date: 2026-06-04T08:12:29.178Z
+date: 2026-06-04T08:22:13.453Z
 tags: 
 editor: markdown
 dateCreated: 2026-06-04T07:48:45.722Z
@@ -12,9 +12,9 @@ dateCreated: 2026-06-04T07:48:45.722Z
 
 ## 개요
 
-본 페이지는 심화 프로젝트에서 사용하는 모니터링 및 관찰성 도구를 정리한 페이지이다.
+모니터링 및 관찰성 도구를 정리
 
-심화 프로젝트에서는 Istio 기반 서비스 메시 환경에서 서비스 간 트래픽 흐름, 에러율, 응답 시간, Envoy Sidecar의 CPU/Memory 사용량, 분산 트레이싱 정보를 확인하는 것을 목표로 한다.
+Istio 기반 서비스 메시 환경에서 서비스 간 트래픽 흐름, 에러율, 응답 시간, Envoy Sidecar의 CPU/Memory 사용량, 분산 트레이싱 정보를 확인하는 것을 주로 작성했다. 
 
 ---
 
@@ -34,25 +34,21 @@ dateCreated: 2026-06-04T07:48:45.722Z
 
 ### Kiali
 
-Kiali는 Istio 서비스 메시의 트래픽 흐름을 시각화하는 도구이다.
+Kiali는 Istio 서비스 메시의 트래픽 흐름을 시각화하는 도구
 
-서비스 간 호출 관계, 트래픽 흐름, 에러율, 응답 시간, mTLS 적용 여부를 확인하는 데 사용한다.
+서비스 간 호출 관계, 트래픽 흐름, 에러율, 응답 시간, mTLS 적용 여부를 확인하는 데 사용
 
-페이지: [Kiali](./Kiali/what-is-kiali)  
-주소: `./Kiali/what-is-kiali`
-
----
+페이지: [Kiali](/Monitoring/kiali/what-is-kiali)  
+<br>
 
 ### Prometheus
 
-Prometheus는 Kubernetes와 Istio 환경에서 발생하는 메트릭을 수집하는 도구이다.
+Prometheus는 Kubernetes와 Istio 환경에서 발생하는 메트릭을 수집하는 도구
 
-본 프로젝트에서는 Istio와 Envoy에서 발생하는 요청 수, 에러율, 응답 시간, Envoy Sidecar CPU/Memory 사용량을 수집한다.
+본 프로젝트에서는 Istio와 Envoy에서 발생하는 요청 수, 에러율, 응답 시간, Envoy Sidecar CPU/Memory 사용량을 수집
 
-페이지: [Prometheus](./Prometheus/what-is-prometheus)  
-주소: `./Prometheus/what-is-prometheus`
-
----
+페이지: [Prometheus](./Prometheus/what-is-prometheus)\
+<br>
 
 ### Grafana
 
@@ -62,8 +58,7 @@ Grafana는 Prometheus에서 수집한 메트릭을 대시보드로 시각화하�
 
 페이지: [Grafana](./Grafana/what-is-grafana)  
 주소: `./Grafana/what-is-grafana`
-
----
+<br>
 
 ### Envoy Metrics
 
@@ -84,10 +79,10 @@ Envoy는 별도의 대시보드 도구라기보다는 Prometheus가 수집하고
 
 페이지: [Envoy Metrics](./Envoy/what-is-envoy-metrics)  
 주소: `./Envoy/what-is-envoy-metrics`
-
----
+<br>
 
 ## 선택 구성
+<br>
 
 ### Jaeger
 
