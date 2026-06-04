@@ -2,7 +2,7 @@
 title: Home
 description: 라즈베리파이 개인 위키 홈
 published: true
-date: 2026-06-03T08:48:03.799Z
+date: 2026-06-04T08:27:51.218Z
 tags: 
 editor: markdown
 dateCreated: 2026-06-03T08:45:40.085Z
@@ -25,8 +25,8 @@ dateCreated: 2026-06-03T08:45:40.085Z
 
 | 항목 | 값 |
 |---|---|
-| Server | Raspberry Pi |
+| Server | Raspberry Pi 5 |
+| Memory | 8GB |
 | OS | Raspberry Pi OS Lite 64-bit |
 | Wiki Engine | Wiki.js |
-| Database | PostgreSQL |
-| Container | Docker Compose |
+| Database | Git & PostgreSQL |
