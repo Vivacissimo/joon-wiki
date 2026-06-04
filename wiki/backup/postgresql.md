@@ -2,7 +2,7 @@
 title: PostgreSQL로 DB 백업
 description: 
 published: true
-date: 2026-06-04T07:31:52.374Z
+date: 2026-06-04T07:39:27.721Z
 tags: 
 editor: markdown
 dateCreated: 2026-06-04T07:31:24.628Z
@@ -173,6 +173,7 @@ crontab -e
 ```cron
 0 3 * * * cd /home/joon/services/wikijs && docker compose exec -T db pg_dump -U wikijs wiki | gzip > /home/joon/backup/wikijs/postgres/wiki_$(date +\%Y\%m\%d_\%H\%M\%S).sql.gz
 ```
+
 
 의미:
 
