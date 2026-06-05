@@ -2,7 +2,7 @@
 title: Service Mesh
 description: 
 published: true
-date: 2026-06-04T06:58:54.461Z
+date: 2026-06-05T03:47:04.140Z
 tags: 
 editor: markdown
 dateCreated: 2026-06-04T06:31:08.252Z
@@ -12,7 +12,7 @@ dateCreated: 2026-06-04T06:31:08.252Z
 
 
 ## 정의
-서비스끼리 통신하는 방법을 애플리케이션 코드 밖에서 관리해주는 인프라 계층
+**서비스끼리 통신하는 방법을 애플리케이션 코드 밖에서 관리해주는 인프라 계층**
 
 
 ## 사용 이유
