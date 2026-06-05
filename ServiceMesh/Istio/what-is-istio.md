@@ -2,7 +2,7 @@
 title: Istio란?
 description: 
 published: true
-date: 2026-06-05T05:08:07.346Z
+date: 2026-06-05T05:09:09.871Z
 tags: 
 editor: markdown
 dateCreated: 2026-06-04T06:14:03.427Z
@@ -245,8 +245,7 @@ v2 장애 발생
 | 장애 대응 | Liveness/Readiness 중심 | Retry, Timeout, Circuit Breaker 가능 |
 | 모니터링 | 별도 계측 필요 | Envoy 기반 메트릭 수집 가능 |
 | 서비스 흐름 확인 | 파악 어려움 | Kiali로 시각화 가능 |
-
----
+<br>
 
 ## 8. Istio를 사용할 때 주의할 점
 
@@ -261,12 +260,12 @@ Istio는 기능이 강력하지만 그만큼 운영 복잡도가 올라갈 수 �
 - 소규모 프로젝트에서는 과한 구성이 될 수 있다.
 
 따라서 운영 환경에서는 Istio의 기능을 모두 쓰기보다는 프로젝트 목적에 맞게 필요한 기능부터 단계적으로 적용하는 것이 좋다.
-
----
+<br>
 
 ## 9. 심화 프로젝트 적용 방향
 
 이번 심화 프로젝트에서는 Istio를 다음 순서로 적용하는 것이 적절합니다.
+<br>
 
 ### 9.1 Istio 설치
 
@@ -308,18 +307,17 @@ patient-service
 ### 9.5 Prometheus / Grafana로 Envoy 리소스 모니터링
 
 Envoy sidecar의 CPU, Memory, Request 수, Error rate, Latency 등을 Prometheus로 수집하고 Grafana에서 시각화합니다.
+<br>
 
 ### 9.6 장애 대응 정책 적용
 
 Retry, Timeout, Circuit Breaker를 설정하여 장애 상황에서 서비스가 어떻게 동작하는지 검증합니다.
-
----
+<br>
 
 ## 10. 한 줄 요약
 
 **Istio는 Kubernetes에서 서비스 간 통신을 제어하고, 보안과 모니터링을 강화하며, Canary/Blue-Green 같은 무중단 배포를 가능하게 해주는 서비스 메시 도구입니다.**
-
----
+<br>
 
 ## 참고 자료
 
