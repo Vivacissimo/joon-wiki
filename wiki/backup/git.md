@@ -2,7 +2,7 @@
 title: Git과 연동하기
 description: 
 published: true
-date: 2026-06-04T07:29:19.848Z
+date: 2026-06-08T07:42:14.372Z
 tags: 
 editor: markdown
 dateCreated: 2026-06-04T07:01:01.379Z
