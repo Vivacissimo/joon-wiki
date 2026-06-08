@@ -2,7 +2,7 @@
 title: EC2
 description: 
 published: true
-date: 2026-06-08T05:49:18.303Z
+date: 2026-06-08T06:19:18.474Z
 tags: 
 editor: markdown
 dateCreated: 2026-06-08T05:26:36.586Z
