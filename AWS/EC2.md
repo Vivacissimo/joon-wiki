@@ -2,7 +2,7 @@
 title: EC2
 description: 
 published: true
-date: 2026-06-08T05:40:28.887Z
+date: 2026-06-08T05:42:05.455Z
 tags: 
 editor: markdown
 dateCreated: 2026-06-08T05:26:36.586Z
@@ -288,10 +288,9 @@ EC2만 끄면 EC2 비용은 줄어듦
 ```
 
 참고: [Amazon EKS 가격 공식 페이지](https://aws.amazon.com/eks/pricing/)
+<br>
 
----
-
-## 10. 심화 프로젝트 기준으로 이해하기
+## 10. 프로젝트 기준으로 이해하기
 
 심화 프로젝트에서 EKS를 쓴다면 구조는 아래와 같이 보면 됩니다.
 
@@ -321,8 +320,7 @@ AWS
     └── monitoring namespace
         └── Prometheus / Grafana / Jaeger
 ```
-
----
+<br>
 
 ## 11. EKS, EC2, Pod 관계
 
@@ -357,8 +355,7 @@ EKS = Kubernetes 클러스터
 EC2 = 워커 노드
 Pod = EC2 위에서 실행되는 컨테이너 단위
 ```
-
----
+<br>
 
 ## 12. SSH와 kubectl 차이
 
@@ -373,8 +370,7 @@ Pod = EC2 위에서 실행되는 컨테이너 단위
 SSH 접속 대상 = EC2 워커 노드
 kubectl 접근 대상 = EKS 클러스터
 ```
-
----
+<br>
 
 ## 13. 한 줄 요약
 
