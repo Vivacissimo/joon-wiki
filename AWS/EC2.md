@@ -2,7 +2,7 @@
 title: EC2
 description: 
 published: true
-date: 2026-06-08T05:39:08.365Z
+date: 2026-06-08T05:40:28.887Z
 tags: 
 editor: markdown
 dateCreated: 2026-06-08T05:26:36.586Z
@@ -156,8 +156,7 @@ kubectl get pods -A
 그 이후 `kubectl`은 이 kubeconfig 정보를 이용해서 EKS API 서버와 통신합니다.
 
 참고: [Amazon EKS kubeconfig 생성 공식 문서](https://docs.aws.amazon.com/eks/latest/userguide/create-kubeconfig.html)
-
----
+<br>
 
 ## 5-2. EC2 워커 노드 접근
 
@@ -177,8 +176,7 @@ kubectl get pods -A -o wide
 kubectl logs -n <namespace> <pod명>
 kubectl exec -it -n <namespace> <pod명> -- /bin/sh
 ```
-
----
+<br>
 
 ## 6. EKS에서 애플리케이션이 배포되는 흐름
 
@@ -217,8 +215,7 @@ EC2 Worker Node
   v
 Medical Service Pods
 ```
-
----
+<br>
 
 ## 7. EKS에서 자주 나오는 용어
 
@@ -236,8 +233,7 @@ Medical Service Pods
 | kubeconfig | kubectl이 클러스터에 접속할 때 쓰는 설정 파일 |
 | IAM | AWS 권한 관리 |
 | VPC | EKS와 EC2가 들어가는 AWS 네트워크 |
-
----
+<br>
 
 ## 8. EC2를 매일 꺼도 되는 이유
 
@@ -267,8 +263,7 @@ eksctl scale nodegroup \
 이렇게 하면 EC2 워커 노드 비용을 줄일 수 있습니다.
 
 참고: [Amazon EKS Managed Node Groups 공식 문서](https://docs.aws.amazon.com/eks/latest/userguide/managed-node-groups.html)
-
----
+<br>
 
 ## 9. 비용 관점에서 중요한 점
 
