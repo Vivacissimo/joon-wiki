@@ -2,7 +2,7 @@
 title: EC2
 description: 
 published: true
-date: 2026-06-08T05:26:36.586Z
+date: 2026-06-08T05:28:57.047Z
 tags: 
 editor: markdown
 dateCreated: 2026-06-08T05:26:36.586Z
@@ -13,16 +13,15 @@ dateCreated: 2026-06-08T05:26:36.586Z
 
 ## 1. EKS란?
 
-**EKS**는 **Amazon Elastic Kubernetes Service**의 약자입니다.
+**EKS**는 **Amazon Elastic Kubernetes Service**의 약자이다.
 
-AWS에서 제공하는 **관리형 Kubernetes 서비스**입니다.
+AWS에서 제공하는 **관리형 Kubernetes 서비스**.
 
 직접 서버에 Kubernetes를 설치하고 Control Plane까지 운영하는 대신,  
-AWS가 Kubernetes의 핵심 관리 영역을 대신 운영해주는 서비스입니다.
+AWS가 Kubernetes의 핵심 관리 영역을 대신 운영해주는 서비스이다.
 
 참고: [Amazon EKS 공식 문서](https://docs.aws.amazon.com/eks/latest/userguide/what-is-eks.html)
-
----
+<br>
 
 ## 2. EKS를 쉽게 이해하면
 
@@ -50,20 +49,18 @@ EC2 Worker Node
   v
 patient-service / appointment-service / prescription-service / notification-service
 ```
-
----
+<br>
 
 ## 3. EKS의 구성
 
-EKS는 크게 두 부분으로 나뉩니다.
+EKS는 크게 두 부분으로 나뉜다.
 
 ```text
 EKS Cluster
 ├── Control Plane
 └── Worker Node
 ```
-
----
+<br>
 
 ## 3-1. Control Plane
 
