@@ -2,7 +2,7 @@
 title: EC2
 description: 
 published: true
-date: 2026-06-08T05:28:57.047Z
+date: 2026-06-08T05:39:08.365Z
 tags: 
 editor: markdown
 dateCreated: 2026-06-08T05:26:36.586Z
@@ -114,8 +114,7 @@ notification-service
 **EKS 클러스터에 연결된 EC2 워커 노드 위에서 실행**됩니다.
 
 참고: [Amazon EKS Managed Node Groups 공식 문서](https://docs.aws.amazon.com/eks/latest/userguide/managed-node-groups.html)
-
----
+<br>
 
 ## 4. EKS와 EC2의 차이
 
@@ -134,10 +133,10 @@ notification-service
 EKS = 클러스터 관리 영역
 EC2 = 실제 작업 서버
 ```
-
----
+<br>
 
 ## 5. 접근 방식
+<br>
 
 ## 5-1. EKS 접근
 
