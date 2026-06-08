@@ -2,7 +2,7 @@
 title: PostgreSQL로 DB 백업
 description: 
 published: true
-date: 2026-06-04T07:42:31.479Z
+date: 2026-06-08T07:43:00.112Z
 tags: 
 editor: markdown
 dateCreated: 2026-06-04T07:31:24.628Z
