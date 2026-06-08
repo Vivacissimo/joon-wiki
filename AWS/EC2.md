@@ -2,7 +2,7 @@
 title: EC2
 description: 
 published: true
-date: 2026-06-08T05:42:05.455Z
+date: 2026-06-08T05:49:18.303Z
 tags: 
 editor: markdown
 dateCreated: 2026-06-08T05:26:36.586Z
@@ -87,8 +87,8 @@ kubectl로 접근
 ```
 
 참고: [Amazon EKS Control Plane 공식 문서](https://docs.aws.amazon.com/eks/latest/best-practices/control-plane.html)
+<br>
 
----
 
 ## 3-2. Worker Node
 
