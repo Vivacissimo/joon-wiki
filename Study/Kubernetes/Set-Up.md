@@ -1,8 +1,8 @@
 ---
-title: SetUp
+title: Setup
 description: 
 published: true
-date: 2026-06-15T03:39:26.347Z
+date: 2026-06-15T06:01:34.905Z
 tags: 
 editor: markdown
 dateCreated: 2026-06-15T03:34:46.002Z
