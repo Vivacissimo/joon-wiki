@@ -2,13 +2,13 @@
 title: Install
 description: 
 published: true
-date: 2026-06-17T03:17:56.823Z
+date: 2026-06-24T09:08:59.576Z
 tags: 
 editor: markdown
 dateCreated: 2026-06-17T03:17:26.258Z
 ---
 
-
+![grafana-prod.png](/grafana-prod.png)
 ## 1. Monitoring Namespace 생성
 
 Prometheus, Grafana 등을 설치할 namespace를 생성합니다.
