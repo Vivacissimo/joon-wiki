@@ -2,7 +2,7 @@
 title: 프로젝트 과업 연계
 description: 
 published: true
-date: 2026-06-30T08:11:23.246Z
+date: 2026-06-30T08:11:42.862Z
 tags: 
 editor: markdown
 dateCreated: 2026-06-30T08:08:17.569Z
@@ -25,6 +25,7 @@ dateCreated: 2026-06-30T08:08:17.569Z
 - 무신사
 - KREAM
 <br>
+
 #### 해외 서비스 후보
 
 - Amazon
@@ -33,6 +34,7 @@ dateCreated: 2026-06-30T08:08:17.569Z
 
 최종적으로 국내 서비스 2~3개와 해외 서비스 2~3개를 선정합니다.
 <br>
+
 ### 비교 항목
 
 - 추정 서비스 아키텍처
