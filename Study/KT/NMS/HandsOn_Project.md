@@ -2,7 +2,7 @@
 title: HandsOn_Project
 description: 
 published: true
-date: 2026-07-11T05:06:32.781Z
+date: 2026-07-11T05:10:39.370Z
 tags: 
 editor: markdown
 dateCreated: 2026-06-30T08:42:01.483Z
