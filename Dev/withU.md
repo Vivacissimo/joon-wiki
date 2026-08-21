@@ -29,9 +29,9 @@ dateCreated: 2026-08-21T07:39:00.000Z
 
 ## 1차 문서
 
-- [제품 개요](./withu/01-product-overview)
-- [1차 MVP](./withu/02-mvp)
-- [데이터 모델](./withu/03-data-model)
-- [이미지 스토리지](./withu/04-image-storage)
-- [일정 및 Apple Calendar](./withu/05-calendar)
-- [개발 계획](./withu/06-development-plan)
+- [제품 개요](./withU/01-product-overview)
+- [1차 MVP](./withU/02-mvp)
+- [데이터 모델](./withU/03-data-model)
+- [이미지 스토리지](./withU/04-image-storage)
+- [일정 및 Apple Calendar](./withU/05-calendar)
+- [개발 계획](./withU/06-development-plan)
