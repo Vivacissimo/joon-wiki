@@ -1,110 +1,484 @@
 ---
 title: Jenkins
-description: macOS 로컬 Jenkins 기반 CI 자동화 실습 기록
+description: Jenkins 개념과 CI Pipeline 구성 정리
 published: true
 date: 2026-08-27T07:01:00.000Z
-tags: jenkins,cicd,devops,github,webhook,nodejs
+tags: jenkins,cicd,devops,github,webhook
 editor: markdown
 dateCreated: 2026-08-27T07:01:00.000Z
 ---
 
 # Jenkins
 
-Jenkins의 기본 개념과 macOS 로컬 환경에서 GitHub Repository를 연동해 CI를 자동화한 실습 기록이다.
+## 개념
 
-GitHub Actions는 별도 문서로 분리해서 정리할 예정이며, 이 문서는 Jenkins에 집중한다.
-
-## 1. Jenkins란
-
-Jenkins는 오픈소스 자동화 서버로, 코드 변경을 기준으로 Build, Test, Image Build, Registry Push 같은 CI 작업을 자동화할 수 있다.
-
-기본 흐름은 다음과 같다.
+- 오픈소스 자동화 서버
+- CI/CD Pipeline 구성 가능
+- Build, Test, Image Build, 배포 작업 자동화
+- 다양한 Plugin 지원
+- 자체 서버에 설치해서 운영
 
 ```text
-개발자
-  ↓ push / merge
-GitHub
-  ↓
+Code Push
+   ↓
 Jenkins
-  ├─ Checkout
-  ├─ Install
-  ├─ Build
-  └─ Test
-  ↓
-SUCCESS / FAILURE
+   ├─ Checkout
+   ├─ Build
+   ├─ Test
+   └─ Image Build
 ```
 
-현재 실습에서는 **CI까지만 Jenkins가 담당**하고, 향후 배포는 ArgoCD를 사용하는 GitOps 구조로 분리할 계획이다.
+## Jenkins 구성
+
+### Controller
+
+- Jenkins 관리 영역
+- Job / Pipeline 관리
+- Plugin 관리
+- Build 스케줄링
+- Agent에 작업 전달
+
+### Agent
+
+- 실제 Build 작업 실행
+- Build / Test / Docker Build 수행
+- 별도 서버, VM, Container, Kubernetes Pod 사용 가능
 
 ```text
-Jenkins = CI
-ArgoCD  = CD
+Jenkins Controller
+        ↓
+     Agent
+   ├─ Build
+   ├─ Test
+   └─ Docker Build
 ```
 
-## 2. 실습 환경
+작은 환경에서는 Controller 자체에서 Build 가능.
 
-- OS: macOS
-- Jenkins: 로컬 설치
-- Jenkins URL: `http://localhost:8080`
-- Test Repository: `Vivacissimo/jenkins-test`
-- Branch: `main`
-- Pipeline: `Pipeline script from SCM`
-- Jenkinsfile: Repository Root
-- Runtime: Node.js 22
+운영 환경에서는 Controller와 Agent 분리 권장.
 
-## 3. Repository 구조
+---
+
+## Job
+
+Jenkins에서 실행할 작업 단위.
+
+대표 유형
+
+- Freestyle Project
+- Pipeline
+- Multibranch Pipeline
+
+### Pipeline
+
+Pipeline 전체 흐름을 코드로 관리.
 
 ```text
-jenkins-test/
+Checkout
+   ↓
+Build
+   ↓
+Test
+   ↓
+Docker Build
+   ↓
+Registry Push
+```
+
+---
+
+## Jenkinsfile
+
+Jenkins Pipeline을 코드로 정의하는 파일.
+
+Repository Root에 주로 배치.
+
+```text
+project/
 ├── Jenkinsfile
-├── app.js
+├── src/
 └── package.json
 ```
 
-`package.json`의 Script는 아래 흐름으로 사용했다.
+장점
 
-```json
-{
-  "scripts": {
-    "build": "echo build success",
-    "test": "node app.js"
-  }
+- Pipeline 설정 Git 관리
+- 코드 변경 이력 확인 가능
+- 프로젝트별 Pipeline 관리 가능
+- Jenkins UI 설정 의존도 감소
+
+---
+
+## Declarative Pipeline
+
+Jenkinsfile 작성 방식 중 하나.
+
+기본 구조
+
+```groovy
+pipeline {
+    agent any
+
+    stages {
+        stage('Build') {
+            steps {
+                sh 'npm run build'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                sh 'npm test'
+            }
+        }
+    }
 }
 ```
 
-## 4. Jenkins Job 설정
+### 주요 구성
 
-Jenkins에서 Pipeline Job을 생성하고 아래처럼 설정했다.
+`pipeline`
+- Pipeline 전체 영역
+
+`agent`
+- Pipeline 실행 위치
+
+`stages`
+- Pipeline 단계 묶음
+
+`stage`
+- Build, Test 같은 개별 단계
+
+`steps`
+- 실제 명령 실행
+
+`post`
+- 성공 / 실패 후 처리
+
+---
+
+## Pipeline script from SCM
+
+Jenkinsfile을 Jenkins UI에 직접 작성하지 않고 Git Repository에서 읽는 방식.
 
 ```text
-New Item
-→ Pipeline
+GitHub Repository
+       ↓
+   Jenkinsfile
+       ↓
+     Jenkins
 ```
 
-Pipeline 설정:
+설정 위치
 
 ```text
-Definition
+Pipeline
+→ Definition
 → Pipeline script from SCM
-
-SCM
-→ Git
-
-Repository URL
-→ https://github.com/Vivacissimo/jenkins-test.git
-
-Branch Specifier
-→ */main
-
-Script Path
-→ Jenkinsfile
 ```
 
-이 설정을 사용하면 Jenkins가 Repository의 최신 `Jenkinsfile`을 가져와 Pipeline을 실행한다.
+필요 항목
 
-## 5. Jenkinsfile
+- SCM: Git
+- Repository URL
+- Branch
+- Script Path: `Jenkinsfile`
 
-현재 실습에서 사용한 Jenkinsfile은 다음과 같다.
+장점
+
+- Jenkinsfile과 Application Code 같이 관리
+- Push된 최신 Pipeline 코드 사용
+- Pipeline 변경 이력 Git에서 확인
+
+---
+
+## SCM Checkout
+
+`Pipeline script from SCM` 사용 시 Jenkins가 기본 Checkout 수행.
+
+로그 예시
+
+```text
+Declarative: Checkout SCM
+```
+
+따라서 아래 Stage를 별도로 추가하면 중복 Checkout 가능.
+
+```groovy
+stage('Checkout') {
+    steps {
+        checkout scm
+    }
+}
+```
+
+특별한 Checkout 처리가 없다면 기본 Checkout만 사용.
+
+---
+
+## Plugin
+
+Jenkins 기능 확장 단위.
+
+예시
+
+- Git Plugin
+- GitHub Plugin
+- NodeJS Plugin
+- Docker Pipeline Plugin
+- Kubernetes Plugin
+- Credentials Plugin
+
+필요한 기능만 설치하는 방식이 관리에 유리.
+
+Plugin 버전 / 보안 업데이트 관리 필요.
+
+---
+
+## Tool 관리
+
+Build에 필요한 Runtime / Tool을 Jenkins에서 관리 가능.
+
+예시
+
+- JDK
+- Maven
+- Gradle
+- Node.js
+
+NodeJS Plugin 예시
+
+```groovy
+tools {
+    nodejs 'node22'
+}
+```
+
+Jenkins에 등록된 `node22` Tool 사용.
+
+장점
+
+- Agent마다 동일한 Tool 이름 사용
+- 로컬 PATH 의존성 감소
+- Pipeline 실행 환경 통일
+
+---
+
+## Trigger
+
+Pipeline 실행 조건.
+
+대표 방식
+
+- 수동 실행
+- Poll SCM
+- Webhook
+- Timer
+- 다른 Job 완료 후 실행
+
+### 수동 실행
+
+```text
+Build Now
+```
+
+테스트할 때 간단한 방식.
+
+### Poll SCM
+
+Jenkins가 Git Repository 변경 여부를 주기적으로 확인.
+
+```text
+Jenkins
+  ↓ 일정 주기
+Git Repository 확인
+  ↓ 변경 있음
+Build
+```
+
+불필요한 Polling 발생 가능.
+
+### Webhook
+
+GitHub 이벤트를 Jenkins로 바로 전달.
+
+```text
+Git Push / Merge
+       ↓
+     GitHub
+       ↓ Webhook
+     Jenkins
+       ↓
+    Pipeline
+```
+
+Push 기반 CI에서 주로 사용.
+
+---
+
+## GitHub Webhook
+
+GitHub Push / Merge 이벤트 발생 시 Jenkins 호출.
+
+Jenkins Trigger
+
+```text
+Configure
+→ Build Triggers
+→ GitHub hook trigger for GITScm polling
+```
+
+Webhook Endpoint
+
+```text
+https://jenkins.example.com/github-webhook/
+```
+
+### Merge와 Push
+
+PR을 `main`에 Merge하면 `main` 변경 발생.
+
+결과적으로 Push 이벤트 발생.
+
+```text
+Feature Branch
+     ↓
+Pull Request
+     ↓
+Merge to main
+     ↓
+Push Event
+     ↓
+Jenkins CI
+```
+
+---
+
+## 로컬 Jenkins와 Webhook
+
+로컬 Jenkins 예시
+
+```text
+http://localhost:8080
+```
+
+GitHub 서버에서 로컬 PC의 `localhost` 접근 불가.
+
+```text
+GitHub ──X──> localhost:8080
+```
+
+로컬 실습용 대안
+
+- GitHub CLI Webhook Forwarding
+- ngrok / Cloudflare Tunnel 같은 Tunnel
+- Poll SCM
+
+### GitHub CLI Forwarding 예시
+
+```bash
+gh extension install cli/gh-webhook
+```
+
+```bash
+gh webhook forward \
+  --repo=Vivacissimo/jenkins-test \
+  --events=push \
+  --url=http://localhost:8080/github-webhook/
+```
+
+흐름
+
+```text
+GitHub
+   ↓
+GitHub CLI
+   ↓
+localhost:8080/github-webhook/
+   ↓
+Jenkins
+```
+
+---
+
+## Credentials
+
+외부 서비스 인증정보 관리 기능.
+
+예시
+
+- GitHub Token
+- AWS Access Key
+- Docker Registry 계정
+- SSH Key
+
+Jenkinsfile에 Secret 직접 작성 금지.
+
+```text
+Jenkins Credentials
+       ↓
+    Pipeline
+       ↓
+GitHub / ECR / AWS
+```
+
+---
+
+## CI에서 Jenkins 역할
+
+일반적인 CI 범위
+
+```text
+Git Push
+   ↓
+Jenkins
+   ├─ Checkout
+   ├─ Dependency Install
+   ├─ Build
+   ├─ Test
+   ├─ Docker Build
+   └─ Registry Push
+```
+
+Jenkins에서 Kubernetes에 직접 배포하는 방식도 가능.
+
+GitOps 환경에서는 CI / CD 분리 가능.
+
+```text
+GitHub
+   ↓
+Jenkins
+   ├─ Build
+   ├─ Test
+   ├─ Docker Build
+   └─ ECR Push
+   ↓
+GitOps Repository
+   ↓
+ArgoCD
+   ↓
+Kubernetes
+```
+
+### Jenkins
+
+- CI
+- Build
+- Test
+- Container Image Build
+- Registry Push
+- GitOps Repository Image Tag 변경
+
+### ArgoCD
+
+- CD
+- Git 변경 감지
+- Kubernetes Manifest Sync
+- 배포 상태 확인
+
+---
+
+## 실습에서 사용한 Jenkinsfile
 
 ```groovy
 pipeline {
@@ -146,311 +520,30 @@ pipeline {
 }
 ```
 
-Pipeline 흐름:
+현재 확인한 흐름
 
 ```text
-Git Checkout
-    ↓
-npm install
-    ↓
-npm run build
-    ↓
-npm test
-    ↓
-CI SUCCESS / FAILURE
-```
-
-## 6. Node.js Tool 설정
-
-처음 실행했을 때 Jenkins에서 아래 오류가 발생했다.
-
-```text
-npm: command not found
-script returned exit code 127
-```
-
-macOS 터미널에서 사용하는 PATH와 Jenkins 서비스가 사용하는 실행 환경이 달라 Jenkins에서 `npm`을 찾지 못한 것이 원인이었다.
-
-### 해결
-
-Jenkins에 **NodeJS Plugin**을 설치하고 Node.js Tool을 등록했다.
-
-```text
-Manage Jenkins
-→ Plugins
-→ NodeJS 설치
-```
-
-이후:
-
-```text
-Manage Jenkins
-→ Tools
-→ NodeJS installations
-```
-
-설정:
-
-```text
-Name: node22
-Install automatically: 활성화
-Node.js: 22.x
-```
-
-그리고 Jenkinsfile에 다음을 추가했다.
-
-```groovy
-tools {
-    nodejs 'node22'
-}
-```
-
-이후 Jenkins가 필요한 Node.js 환경을 자동으로 준비하면서 `npm install`, `npm run build`, `npm test`가 정상 실행됐다.
-
-## 7. Checkout 중복 제거
-
-`Pipeline script from SCM`을 사용하는 Declarative Pipeline에서는 Jenkins가 Pipeline 시작 시 자동으로 SCM Checkout을 수행한다.
-
-로그에서 아래 Stage가 자동으로 생성된다.
-
-```text
-Declarative: Checkout SCM
-```
-
-따라서 Jenkinsfile에 아래 내용을 별도로 넣으면 Checkout이 두 번 발생한다.
-
-```groovy
-stage('Checkout') {
-    steps {
-        checkout scm
-    }
-}
-```
-
-현재는 별도 Checkout Stage를 제거하고 Jenkins 기본 Checkout만 사용하고 있다.
-
-## 8. GitHub Push / Merge 자동 CI
-
-초기에는 GitHub에 Push한 뒤 Jenkins에서 직접 `Build Now`를 눌러야 했다.
-
-목표는 다음처럼 변경했다.
-
-```text
-git push / PR merge
+GitHub Push / Merge
         ↓
-GitHub
+      Webhook
         ↓
-Webhook
+      Jenkins
         ↓
-Jenkins
+      Build
         ↓
-CI 자동 실행
+       Test
+        ↓
+    CI SUCCESS
 ```
 
-### Jenkins Trigger 설정
+---
 
-Jenkins Job에서:
+## 다음 정리
 
-```text
-Configure
-→ Build Triggers
-→ GitHub hook trigger for GITScm polling
-```
-
-을 활성화했다.
-
-## 9. 로컬 Jenkins Webhook 문제
-
-Jenkins가 아래 주소에서 실행 중이기 때문에 GitHub 서버가 직접 접근할 수 없다.
-
-```text
-http://localhost:8080
-```
-
-GitHub 서버 입장에서 `localhost`는 사용자 Mac이 아니기 때문이다.
-
-```text
-GitHub
-   │
-   └──X──→ localhost:8080
-```
-
-로컬 실습에서는 GitHub CLI의 Webhook Forwarding을 사용했다.
-
-## 10. GitHub CLI Webhook Forwarding
-
-GitHub CLI 설치 및 인증 후 webhook extension을 설치한다.
-
-```bash
-gh extension install cli/gh-webhook
-```
-
-Webhook Forwarding 실행:
-
-```bash
-gh webhook forward \
-  --repo=Vivacissimo/jenkins-test \
-  --events=push \
-  --url=http://localhost:8080/github-webhook/
-```
-
-이 명령을 실행 중인 동안 GitHub의 Push 이벤트가 로컬 Jenkins로 전달된다.
-
-```text
-GitHub
-   ↓ push event
-GitHub CLI
-   ↓ forwarding
-localhost:8080/github-webhook/
-   ↓
-Jenkins
-```
-
-## 11. Push 시 자동 실행
-
-`main`에 직접 Push하면 다음 흐름으로 자동 CI가 실행되는 것을 확인했다.
-
-```text
-git push origin main
-        ↓
-GitHub Push Event
-        ↓
-Webhook
-        ↓
-Jenkins
-        ↓
-Jenkinsfile 실행
-        ↓
-Install → Build → Test
-```
-
-## 12. PR Merge 시 자동 실행
-
-Feature Branch에서 PR을 생성한 뒤 `main`으로 Merge하는 경우에도 `main`이 변경되므로 Push 이벤트가 발생한다.
-
-```text
-feature branch
-       ↓
-Pull Request
-       ↓
-Merge to main
-       ↓
-main 변경
-       ↓
-Push Event
-       ↓
-Webhook
-       ↓
-Jenkins CI
-```
-
-즉 현재 구성에서는 아래 두 경우 모두 자동 CI가 실행된다.
-
-- `main` 직접 Push
-- PR을 `main`으로 Merge
-
-## 13. 성공 로그
-
-최종적으로 아래 단계가 모두 성공했다.
-
-```text
-GitHub 최신 Commit Checkout
-        ↓
-Node.js 22 Tool 준비
-        ↓
-npm install
-        ↓
-npm run build
-        ↓
-npm test
-        ↓
-CI SUCCESS
-        ↓
-Finished: SUCCESS
-```
-
-## 14. 현재 완료 범위
-
-- [x] macOS Jenkins 설치
-- [x] Jenkins Pipeline Job 생성
-- [x] GitHub Repository 연동
-- [x] Pipeline script from SCM 설정
-- [x] Jenkinsfile 자동 로드
-- [x] 최신 `main` Commit Checkout
-- [x] NodeJS Plugin 설정
-- [x] Node.js 22 Tool 설정
-- [x] `npm install`
-- [x] Build
-- [x] Test
-- [x] Pipeline 성공/실패 처리
-- [x] 중복 Checkout 제거
-- [x] GitHub Push 시 CI 자동 실행
-- [x] PR Merge 후 CI 자동 실행
-
-## 15. 다음 실습
-
-현재는 코드 Build/Test까지 완료한 상태다.
-
-다음 단계는 Jenkins에서 배포 가능한 Container Image를 만드는 흐름이다.
-
-```text
-GitHub
-  ↓
-Jenkins
-  ├─ Checkout
-  ├─ Install
-  ├─ Build
-  ├─ Test
-  ├─ Docker Build
-  └─ ECR Push
-```
-
-추가할 내용:
-
-1. Dockerfile 작성
-2. Jenkins에서 Docker Image Build
-3. Image Tag에 `BUILD_NUMBER` 또는 Git Commit SHA 적용
-4. AWS ECR 인증
-5. ECR Push
-6. GitOps Repository의 Image Tag 변경
-7. ArgoCD가 변경을 감지해 EKS에 배포
-
-## 16. 최종적으로 가져갈 CI/CD 역할 분리
-
-향후 실제 프로젝트에서는 Jenkins가 Kubernetes에 직접 배포하기보다 CI와 CD를 분리한다.
-
-```text
-Developer
-   ↓
-GitHub
-   ↓
-Jenkins
-   ├─ Build
-   ├─ Test
-   ├─ Docker Build
-   └─ ECR Push
-   ↓
-GitOps Repository
-   ↓
-ArgoCD
-   ↓
-EKS
-```
-
-### Jenkins
-
-- Checkout
-- Build
-- Test
-- Container Image Build
-- Registry Push
-- GitOps Repository Image Tag 갱신
-
-### ArgoCD
-
-- GitOps Repository 변경 감지
-- Kubernetes Manifest 동기화
-- EKS 배포
-- Application 상태 확인
-
-이 구조를 기준으로 Jenkins와 GitHub Actions를 각각 실습한 뒤 CI 도구의 차이를 비교할 예정이다.
+- Docker Build
+- Image Tag 전략
+- AWS ECR Push
+- Jenkins Credentials
+- Kubernetes Agent
+- Jenkins 동적 Agent
+- Jenkins vs GitHub Actions
