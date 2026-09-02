@@ -2,7 +2,7 @@
 title: Git
 description: Git과 GitHub의 저장소 구조, 브랜치, 협업 및 배포 전략을 정리하는 상위 문서
 published: true
-date: 2026-08-12T00:16:00.000+09:00
+date: 2026-09-02T20:00:00.000+09:00
 tags: git, github, devops
 editor: markdown
 dateCreated: 2026-08-12T00:16:00.000+09:00
@@ -23,12 +23,14 @@ dateCreated: 2026-08-12T00:16:00.000+09:00
 ```text
 Study/Git/
 ├── Git.md
+├── Gitignore.md
 ├── Monorepo-Multirepo.md
 └── Branch-Strategy.md
 ```
 
 | 문서 | 내용 |
 |---|---|
+| [.gitignore와 이미 추적 중인 파일 제거](./Gitignore) | `.gitignore` 적용, `git rm --cached`, 이미 GitHub에 올라간 파일/폴더의 추적 해제 |
 | [Monorepo와 Multirepo](./Monorepo-Multirepo) | 하나의 저장소와 여러 저장소 전략의 차이, 장단점, CI/CD 및 GitOps 관점 |
 | [Git Branch Strategy](./Branch-Strategy) | Git Flow, GitHub Flow, GitLab Flow, Trunk-Based Development와 브랜치 운영 기준 |
 <br>
@@ -46,6 +48,10 @@ Git 운영 전략
 │   ├── GitHub Flow
 │   ├── GitLab Flow
 │   └── Trunk-Based Development
+│
+├── File Tracking
+│   ├── .gitignore
+│   └── git rm --cached
 │
 ├── Collaboration
 │   ├── Pull Request
@@ -68,6 +74,7 @@ Git 관련 내용은 이 카테고리 아래에 계속 추가한다.
 ```text
 Study/Git/
 ├── Git.md
+├── Gitignore.md
 ├── Monorepo-Multirepo.md
 ├── Branch-Strategy.md
 ├── Pull-Request.md
