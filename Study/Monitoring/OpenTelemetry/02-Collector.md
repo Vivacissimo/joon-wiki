@@ -1,6 +1,6 @@
 ---
 title: 02. OpenTelemetry Collector
-description: OTel Collector의 수집과 전달 구조
+description: OTel Collector 수집과 전달 구조
 published: true
 date: 2026-09-09T10:00:00.000Z
 tags: monitoring, opentelemetry, collector
@@ -12,7 +12,7 @@ dateCreated: 2026-09-09T10:00:00.000Z
 
 ## 역할
 
-OTel Collector는 애플리케이션이나 Agent에서 전달된 Telemetry를 받아 가공하고 원하는 Backend로 전달하는 중간 계층.
+OTel Collector = Telemetry를 받아서 가공하고 Backend로 넘기는 중간 계층.
 
 ```text
 Application
@@ -25,9 +25,7 @@ OTel Collector
    └─→ 기타 Backend
 ```
 
-## 기본 구성
-
-Collector Pipeline은 크게 세 부분으로 구성.
+## 기본 구조
 
 ```text
 Receiver
@@ -48,17 +46,17 @@ Telemetry를 받는 입력.
 
 ### Processor
 
-받은 데이터를 가공.
+받은 데이터 가공.
 
 예시
 
 - Batch 처리
 - Attribute 추가/변환
-- Sampling 관련 처리
+- Sampling 처리
 
 ### Exporter
 
-처리한 데이터를 외부 Backend로 전송.
+가공한 데이터를 Backend로 전송.
 
 예시
 
@@ -66,15 +64,19 @@ Telemetry를 받는 입력.
 - Prometheus 계열 Backend
 - Log Backend
 
-## 로그 Collector와의 관계
+## 로그 Collector와 관계
 
-로그 수집은 Grafana Alloy, Fluent Bit, OTel Collector 중 프로젝트 목적에 맞는 도구를 선택 가능.
+로그 수집 도구는 프로젝트 구성에 따라 다르게 잡을 수 있음.
 
-OpenTelemetry 기반으로 Trace와 Log 처리를 통합하면 구성 요소를 줄일 수 있지만, 실제 선택은 운영 요구사항과 Helm Chart 지원 범위를 보고 결정.
+```text
+Grafana Alloy
+Fluent Bit
+OpenTelemetry Collector
+```
 
-## 주의
+Trace와 Log를 OTel 쪽으로 같이 처리할 수도 있고, 로그는 별도 Collector를 둘 수도 있음.
 
-Collector는 Trace를 장기 저장하는 DB가 아님.
+## 역할 구분
 
 ```text
 수집/가공/전달 → OTel Collector
@@ -82,6 +84,12 @@ Trace 저장/검색 → Tempo
 Log 저장/검색   → Loki
 ```
 
+Collector는 저장소가 아님.
+
 ## 참고
 
-- OpenTelemetry Collector: https://opentelemetry.io/docs/collector/
+- https://opentelemetry.io/docs/collector/
+
+## 다음
+
+- [01. Tempo Overview](../Tempo/01-Overview)
