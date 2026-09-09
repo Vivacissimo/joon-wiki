@@ -1,5 +1,5 @@
 ---
-title: Log Data Dictionary
+title: 02. Log Data Dictionary
 description: 필수 로그 이벤트와 필드를 정의하는 기준
 published: true
 date: 2026-09-09T10:00:00.000Z
@@ -8,7 +8,7 @@ editor: markdown
 dateCreated: 2026-09-09T10:00:00.000Z
 ---
 
-# Log Data Dictionary
+# 02. Log Data Dictionary
 
 ## 개념
 
@@ -95,4 +95,4 @@ Dictionary의 한글 항목을 그대로 JSON Key로 사용할 필요는 없음.
 개발/DevOps 공통 JSON Schema로 변환
 ```
 
-다음: [Structured JSON Log](/Monitoring/Logging/03-JSON-Log-Format)
+다음: [03. Structured JSON Log](/Monitoring/Logging/03-JSON-Log-Format)
