@@ -1,100 +1,121 @@
 ---
 title: Monitoring
-description: 
+description: Metrics, Logs, Traces 기반 Observability 정리
 published: true
-date: 2026-06-04T08:22:52.327Z
-tags: 
+date: 2026-09-09T10:00:00.000Z
+tags: monitoring, observability
 editor: markdown
 dateCreated: 2026-06-04T07:48:45.722Z
 ---
 
-# 모니터링 및 관찰성 스택
+# Monitoring & Observability
 
 ## 개요
 
-모니터링 및 관찰성 도구를 정리
-
-Istio 기반 서비스 메시 환경에서 서비스 간 트래픽 흐름, 에러율, 응답 시간, Envoy Sidecar의 CPU/Memory 사용량, 분산 트레이싱 정보를 확인하는 것을 주로 작성했다. 
-
----
-
-## 사용하는 모니터링 도구 목록
-
-| 구분 | 도구 | 사용 여부 | 역할 
-|---|---|---|---|---|
-| 서비스 메시 시각화 | [Kiali](/Monitoring/kiali/what-is-kiali) | 필수 | 서비스 간 트래픽 흐름, 에러율, 서비스 토폴로지 시각화 
-| 메트릭 수집 | [Prometheus](./Prometheus/what-is-prometheus) | 필수 | Istio, Envoy, Kubernetes 메트릭 수집 
-| 대시보드 | [Grafana](./Grafana/what-is-grafana) | 필수 | Prometheus 메트릭 기반 대시보드 시각화 
-| 분산 트레이싱 | [Jaeger](./Jaeger/what-is-jaeger) | 선택 | 서비스 간 요청 흐름 추적 및 병목 구간 분석
-| 서비스 메시 메트릭 | [Envoy Metrics](./Envoy/what-is-envoy-metrics) | 필수 측정 대상 | Envoy Sidecar의 요청 수, 에러율, 응답 시간, CPU/Memory 확인 
-
----
-
-## 필수 구성
-
-### Kiali
-
-Kiali는 Istio 서비스 메시의 트래픽 흐름을 시각화하는 도구
-
-서비스 간 호출 관계, 트래픽 흐름, 에러율, 응답 시간, mTLS 적용 여부를 확인하는 데 사용
-
-페이지: [Kiali](/Monitoring/kiali/what-is-kiali)  
-<br>
-
-### Prometheus
-
-Prometheus는 Kubernetes와 Istio 환경에서 발생하는 메트릭을 수집하는 도구
-
-본 프로젝트에서는 Istio와 Envoy에서 발생하는 요청 수, 에러율, 응답 시간, Envoy Sidecar CPU/Memory 사용량을 수집
-
-페이지: [Prometheus](./Prometheus/what-is-prometheus)\
-<br>
-
-### Grafana
-
-Grafana는 Prometheus에서 수집한 메트릭을 대시보드로 시각화하는 도구이다.
-
-서비스별 요청 수, 에러율, 응답 시간, P95/P99 지연 시간, Envoy CPU/Memory 사용량을 확인하는 데 사용한다.
-
-페이지: [Grafana](./Grafana/what-is-grafana)  
-주소: `./Grafana/what-is-grafana`
-<br>
-
-### Envoy Metrics
-
-Envoy Metrics는 Istio Sidecar Proxy인 Envoy에서 발생하는 메트릭이다.
-
-Envoy는 별도의 대시보드 도구라기보다는 Prometheus가 수집하고 Grafana에서 시각화하는 측정 대상이다.
-
-확인 항목은 다음과 같다.
-
-- 서비스 간 요청 수
-- HTTP 응답 코드
-- 에러율
-- 응답 시간
-- Retry 발생 여부
-- Circuit Breaker 동작 여부
-- Envoy Sidecar CPU 사용량
-- Envoy Sidecar Memory 사용량
-
-페이지: [Envoy Metrics](./Envoy/what-is-envoy-metrics)  
-주소: `./Envoy/what-is-envoy-metrics`
-<br>
-
-## 선택 구성
-<br>
-
-### Jaeger
-
-Jaeger는 분산 트레이싱 도구이다.
-
-하나의 요청이 여러 서비스를 거쳐 처리될 때, 각 서비스에서 걸린 시간과 병목 구간을 추적하는 데 사용한다.
-
-예를 들어 다음과 같은 요청 흐름을 추적할 수 있다.
+시스템 상태를 확인하고 장애 원인을 추적하기 위한 Metrics, Logs, Traces와 관련 도구 정리.
 
 ```text
-Appointment Service
-  ↓
-Prescription Service
-  ↓
-Notification Service
+                    Grafana
+                       │
+        ┌──────────────┼──────────────┐
+        ▼              ▼              ▼
+   Prometheus         Loki           Tempo
+    Metrics           Logs           Traces
+```
+
+각 데이터의 역할
+
+| 데이터 | 확인하는 내용 | 대표 도구 |
+|---|---|---|
+| Metrics | 얼마나 느린지, 에러가 얼마나 발생하는지 | Prometheus |
+| Logs | 어떤 오류가 발생했고 왜 실패했는지 | Loki |
+| Traces | 요청이 어디를 거쳤고 어느 구간이 느린지 | Tempo |
+| Visualization | Metric / Log / Trace 조회 및 연결 | Grafana |
+
+장애 분석은 다음 흐름으로 연결.
+
+```text
+Metric
+"문제가 발생했는가?"
+   ↓
+Trace
+"어디에서 발생했는가?"
+   ↓
+Log
+"왜 발생했는가?"
+```
+
+---
+
+# 문서 구조
+
+## Logging
+
+애플리케이션에서 어떤 이벤트를 어떤 필드로 기록하고, 수집 파이프라인으로 전달하는지 정리.
+
+1. [Logging Overview](/Monitoring/Logging/01-Overview)
+2. [Log Data Dictionary](/Monitoring/Logging/02-Log-Data-Dictionary)
+3. [Structured JSON Log](/Monitoring/Logging/03-JSON-Log-Format)
+4. [Log Collection Pipeline](/Monitoring/Logging/04-Collection-Pipeline)
+
+## Loki
+
+로그 저장 및 검색 Backend.
+
+1. [Loki Overview](/Monitoring/Loki/01-Overview)
+2. [Loki Architecture](/Monitoring/Loki/02-Architecture)
+
+## Distributed Tracing
+
+하나의 요청을 Trace와 Span으로 연결해 서비스 간 처리 흐름을 추적.
+
+1. [Distributed Tracing Overview](/Monitoring/Tracing/01-Overview)
+2. [Trace and Span](/Monitoring/Tracing/02-Trace-Span)
+3. [Context Propagation](/Monitoring/Tracing/03-Context-Propagation)
+4. [Log Trace Correlation](/Monitoring/Tracing/04-Log-Trace-Correlation)
+
+## OpenTelemetry
+
+Trace 생성, Context 전파, Telemetry 수집/전달.
+
+1. [OpenTelemetry Overview](/Monitoring/OpenTelemetry/01-Overview)
+2. [OpenTelemetry Collector](/Monitoring/OpenTelemetry/02-Collector)
+
+## Tempo
+
+분산 추적 데이터 저장 및 검색 Backend.
+
+1. [Tempo Overview](/Monitoring/Tempo/01-Overview)
+2. [Tempo Architecture](/Monitoring/Tempo/02-Architecture)
+
+## Grafana
+
+Prometheus, Loki, Tempo 등의 Data Source를 연결해 Metrics, Logs, Traces를 한 화면에서 조회.
+
+- [Grafana](/Monitoring/Grafana/Install)
+
+## Kiali
+
+Istio Service Mesh 환경의 서비스 토폴로지와 트래픽 흐름 확인.
+
+- [Kiali](/Monitoring/kiali/what-is-kiali)
+
+---
+
+# 전체 데이터 흐름
+
+```text
+Application
+   │
+   ├─ Metrics ───────────────→ Prometheus ─┐
+   │                                      │
+   ├─ JSON Log → Collector → Loki ────────┤
+   │                                      ├─→ Grafana
+   └─ OpenTelemetry                       │
+          ↓                               │
+      Trace / Span                        │
+          ↓                               │
+      OTel Collector → Tempo ─────────────┘
+```
+
+로그와 Trace에는 동일한 `trace_id`를 포함해 Grafana에서 서로 연결할 수 있도록 구성.
