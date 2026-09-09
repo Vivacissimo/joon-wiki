@@ -314,7 +314,7 @@ ArgoCD를 쓴다고 모든 환경을 무조건 자동 Sync로 둘 필요는 없�
 
 ## 다음
 
-[06. ApplicationSet](./06-ApplicationSet)
+[06. Application 관리 방식](./06-ApplicationSet)
 
 ---
 
