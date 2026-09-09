@@ -12,7 +12,7 @@ dateCreated: 2026-09-09T10:00:00.000Z
 
 ## 전체 흐름
 
-애플리케이션이 JSON 로그를 `stdout/stderr`로 출력하고, Collector가 로그를 읽어 Loki로 전달.
+애플리케이션에서 JSON 로그 출력 → Collector가 읽음 → Loki에 저장 → Grafana에서 확인.
 
 ```text
 Application
@@ -29,13 +29,9 @@ Loki
 Grafana
 ```
 
-## 역할 구분
+## Application
 
-### Application
-
-로그 이벤트 생성.
-
-예시
+로그를 만드는 곳.
 
 ```json
 {
@@ -46,37 +42,40 @@ Grafana
 }
 ```
 
-### Collector
+## Collector
 
-로그를 실제로 읽고 전달하는 구성 요소.
+실제로 로그를 읽고 전달하는 쪽.
 
-주요 역할
+하는 일
 
 - Container Log 읽기
 - JSON 파싱
 - Kubernetes Metadata 추가
-- 불필요한 필드 제거/변환
-- Loki 등 저장소로 전송
+- 필드 변환/제거
+- Loki로 전송
 
-예시 도구
+도구 예시
 
 - Grafana Alloy
 - Fluent Bit
 - OpenTelemetry Collector
 
-### Loki
+## Loki
 
-로그 저장 및 검색 담당.
+로그 저장 + 검색.
 
-Loki가 Pod에서 직접 로그를 긁어오는 개념으로 보기보다는 Collector가 전달한 로그를 저장하고 조회하는 Backend로 이해.
+Loki가 Pod에 들어가서 직접 로그를 만드는 구조가 아님.
 
-### Grafana
-
-Loki를 Data Source로 연결해 로그를 검색하고 시각화.
+```text
+Application → 로그 생성
+Collector   → 로그 수집/전달
+Loki        → 로그 저장/검색
+Grafana     → 로그 확인
+```
 
 ## Kubernetes Metadata
 
-Collector 단계에서 다음 정보를 로그에 추가 가능.
+Collector에서 같이 붙일 수 있는 값.
 
 ```text
 namespace
@@ -98,20 +97,6 @@ labels
 }
 ```
 
-## 수집 대상과 저장소를 구분
+## 다음
 
-```text
-로그를 무엇으로 남길지
-→ Application / Security 정책
-
-로그를 어떻게 가져올지
-→ Collector
-
-로그를 어디에 저장할지
-→ Loki
-
-로그를 어디서 볼지
-→ Grafana
-```
-
-다음: [01. Loki Overview](/Monitoring/Loki/01-Overview)
+- [01. Loki Overview](../Loki/01-Overview)
