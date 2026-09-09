@@ -1,6 +1,6 @@
 ---
 title: 01. Distributed Tracing Overview
-description: 분산 추적의 목적과 전체 흐름
+description: 분산 추적 목적과 전체 흐름
 published: true
 date: 2026-09-09T10:00:00.000Z
 tags: monitoring, tracing, observability
@@ -12,7 +12,7 @@ dateCreated: 2026-09-09T10:00:00.000Z
 
 ## 개념
 
-분산 추적은 하나의 요청이 여러 서비스나 컴포넌트를 거치는 전체 흐름을 하나로 연결해서 보는 방식.
+한 요청이 여러 서비스나 컴포넌트를 거치는 흐름을 하나로 묶어서 보는 것.
 
 ```text
 User
@@ -26,21 +26,27 @@ AI
 Database
 ```
 
-로그만 보면 각 서비스의 기록이 따로 존재하지만 Trace를 사용하면 하나의 요청으로 묶어서 확인 가능.
+로그만 보면 서비스별 기록이 따로 보임.
 
-## 필요한 이유
+Trace가 있으면 같은 요청으로 묶어서 확인 가능.
 
-메트릭으로 `느려졌다`는 사실은 알 수 있지만 어디에서 느려졌는지는 바로 알기 어려움.
+## 왜 필요한가
+
+Metric은 `느려졌다` 정도까지 확인.
+
+Trace는 `어디에서 느려졌는지` 확인.
+
+Log는 `왜 느려졌는지` 확인.
 
 ```text
 Metric
-"Latency 증가"
+Latency 증가
    ↓
 Trace
-"AI 호출 구간에서 지연"
+AI 호출 구간 지연
    ↓
 Log
-"pgvector timeout"
+pgvector timeout
 ```
 
 ## 전체 흐름
@@ -59,15 +65,13 @@ Tempo
 Grafana
 ```
 
-## 역할 구분
+## 역할
 
-- OpenTelemetry: Trace/Span 생성과 전파
-- OTel Collector: Telemetry 수집 및 전달
-- Tempo: Trace 저장 및 검색
-- Grafana: Trace 시각화
+- OpenTelemetry → Trace / Span 생성 + Context 전파
+- OTel Collector → Trace 수집/전달
+- Tempo → Trace 저장/검색
+- Grafana → Trace 확인
 
 ## 다음
 
-- [02. Trace and Span](/Monitoring/Tracing/02-Trace-Span)
-- [03. Context Propagation](/Monitoring/Tracing/03-Context-Propagation)
-- [04. Log Trace Correlation](/Monitoring/Tracing/04-Log-Trace-Correlation)
+- [02. Trace and Span](./02-Trace-Span)
