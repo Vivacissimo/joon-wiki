@@ -2,7 +2,7 @@
 title: CI/CD
 description: CI/CD 도구와 파이프라인 실습 정리
 published: true
-date: 2026-09-09T08:00:00.000Z
+date: 2026-09-09T08:12:00.000Z
 tags: cicd,devops,jenkins,argocd,gitops
 editor: markdown
 dateCreated: 2026-08-27T07:01:00.000Z
@@ -82,7 +82,7 @@ ArgoCD는 한 페이지에 몰아넣지 않고 아래 순서대로 정리.
 3. [03. Install](./CICD/ArgoCD/03-Install)
 4. [04. Application](./CICD/ArgoCD/04-Application)
 5. [05. Sync](./CICD/ArgoCD/05-Sync)
-6. [06. ApplicationSet](./CICD/ArgoCD/06-ApplicationSet)
+6. [06. Application 관리 방식 - Application / ApplicationSet / App of Apps](./CICD/ArgoCD/06-ApplicationSet)
 7. [07. Helm Integration](./CICD/ArgoCD/07-Helm-Integration)
 8. [08. Jenkins Integration](./CICD/ArgoCD/08-Jenkins-Integration)
 9. [09. Deployment / Rollback](./CICD/ArgoCD/09-Deployment-Rollback)
