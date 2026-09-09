@@ -1,5 +1,5 @@
 ---
-title: Loki Overview
+title: 01. Loki Overview
 description: Loki의 역할과 로그 저장 구조
 published: true
 date: 2026-09-09T10:00:00.000Z
@@ -8,7 +8,7 @@ editor: markdown
 dateCreated: 2026-09-09T10:00:00.000Z
 ---
 
-# Loki Overview
+# 01. Loki Overview
 
 ## 역할
 
@@ -72,4 +72,4 @@ namespace="moongcheap"
 
 - Grafana Loki: https://grafana.com/docs/loki/latest/
 
-다음: [Loki Architecture](/Monitoring/Loki/02-Architecture)
+다음: [02. Loki Architecture](/Monitoring/Loki/02-Architecture)
