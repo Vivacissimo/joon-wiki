@@ -1,5 +1,5 @@
 ---
-title: Trace and Span
+title: 02. Trace and Span
 description: Trace와 Span의 관계
 published: true
 date: 2026-09-09T10:00:00.000Z
@@ -8,7 +8,7 @@ editor: markdown
 dateCreated: 2026-09-09T10:00:00.000Z
 ---
 
-# Trace and Span
+# 02. Trace and Span
 
 ## Trace
 
@@ -82,4 +82,4 @@ POST /recommend          3.2s
 }
 ```
 
-다음: [Context Propagation](/Monitoring/Tracing/03-Context-Propagation)
+다음: [03. Context Propagation](/Monitoring/Tracing/03-Context-Propagation)
