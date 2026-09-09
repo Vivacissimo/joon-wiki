@@ -1,5 +1,5 @@
 ---
-title: Distributed Tracing Overview
+title: 01. Distributed Tracing Overview
 description: 분산 추적의 목적과 전체 흐름
 published: true
 date: 2026-09-09T10:00:00.000Z
@@ -8,7 +8,7 @@ editor: markdown
 dateCreated: 2026-09-09T10:00:00.000Z
 ---
 
-# Distributed Tracing Overview
+# 01. Distributed Tracing Overview
 
 ## 개념
 
@@ -68,6 +68,6 @@ Grafana
 
 ## 다음
 
-- [Trace와 Span](/Monitoring/Tracing/02-Trace-Span)
-- [Context Propagation](/Monitoring/Tracing/03-Context-Propagation)
-- [Log Trace Correlation](/Monitoring/Tracing/04-Log-Trace-Correlation)
+- [02. Trace and Span](/Monitoring/Tracing/02-Trace-Span)
+- [03. Context Propagation](/Monitoring/Tracing/03-Context-Propagation)
+- [04. Log Trace Correlation](/Monitoring/Tracing/04-Log-Trace-Correlation)
