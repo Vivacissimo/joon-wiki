@@ -1,5 +1,5 @@
 ---
-title: Logging Overview
+title: 01. Logging Overview
 description: 운영 로그의 목적과 수집 범위
 published: true
 date: 2026-09-09T10:00:00.000Z
@@ -8,7 +8,7 @@ editor: markdown
 dateCreated: 2026-09-09T10:00:00.000Z
 ---
 
-# Logging Overview
+# 01. Logging Overview
 
 ## 로그를 남기는 이유
 
@@ -71,6 +71,6 @@ dateCreated: 2026-09-09T10:00:00.000Z
 
 ## 다음
 
-- [Log Data Dictionary](/Monitoring/Logging/02-Log-Data-Dictionary)
-- [Structured JSON Log](/Monitoring/Logging/03-JSON-Log-Format)
-- [Log Collection Pipeline](/Monitoring/Logging/04-Collection-Pipeline)
+- [02. Log Data Dictionary](/Monitoring/Logging/02-Log-Data-Dictionary)
+- [03. Structured JSON Log](/Monitoring/Logging/03-JSON-Log-Format)
+- [04. Log Collection Pipeline](/Monitoring/Logging/04-Collection-Pipeline)
