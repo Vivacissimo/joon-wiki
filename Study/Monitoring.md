@@ -2,7 +2,7 @@
 title: Monitoring
 description: Metrics, Logs, Traces 기반 Observability 정리
 published: true
-date: 2026-09-09T10:00:00.000Z
+date: 2026-09-09T12:04:00.000Z
 tags: monitoring, observability
 editor: markdown
 dateCreated: 2026-06-04T07:48:45.722Z
@@ -19,16 +19,17 @@ Metrics, Logs, Traces를 같이 봐서 시스템 상태 확인 + 장애 원인 �
                        │
         ┌──────────────┼──────────────┐
         ▼              ▼              ▼
-   Prometheus         Loki           Tempo
-    Metrics           Logs           Traces
+   Prometheus         Loki      Tempo / Jaeger
+    Metrics           Logs          Traces
 ```
 
 | 데이터 | 보는 내용 | 도구 |
 |---|---|---|
 | Metrics | 요청량, 에러율, 지연시간, 자원 상태 | Prometheus |
 | Logs | 어떤 오류가 발생했는지, 왜 실패했는지 | Loki |
-| Traces | 요청이 어디를 거쳤고 어디서 느려졌는지 | Tempo |
-| 화면 | Metric / Log / Trace 조회 및 연결 | Grafana |
+| Traces | 요청이 어디를 거쳤고 어디서 느려졌는지 | Tempo / Jaeger |
+| 화면 | Metric / Log / Trace 조회 | Grafana |
+| Service Mesh | 서비스 관계, Istio 트래픽 상태 | Kiali |
 
 장애 볼 때 흐름
 
@@ -81,10 +82,14 @@ Monitoring
    02 Collector
    │
    ▼
-5. Tempo
-   01 Overview
-      ↓
-   02 Architecture
+5. Trace Backend
+   ├─ Tempo
+   │  ├─ 01 Overview
+   │  └─ 02 Architecture
+   │
+   └─ Jaeger
+      ├─ 01 Overview
+      └─ 02 Architecture
    │
    ▼
 6. Log ↔ Trace Correlation
@@ -94,17 +99,28 @@ Monitoring
 7. Grafana
 ```
 
+Istio / Service Mesh 쪽은 따로 봄.
+
+```text
+Istio
+  ↓
+Kiali
+├─ 01 Overview
+└─ 02 Architecture
+```
+
 정리하면
 
 1. **Logging** — 어떤 로그를 남길지 + JSON 형식
 2. **Loki** — 로그 저장/검색
 3. **Distributed Tracing** — Trace, Span, Context 개념
 4. **OpenTelemetry** — Trace 생성/전파 + Collector
-5. **Tempo** — Trace 저장/검색
-6. **Log Trace Correlation** — `trace_id`로 Loki ↔ Tempo 연결
+5. **Tempo / Jaeger** — Trace 저장/조회
+6. **Log Trace Correlation** — `trace_id`로 Log ↔ Trace 연결
 7. **Grafana** — Metric / Log / Trace 한 화면에서 확인
+8. **Kiali** — Istio 서비스 관계 / 트래픽 흐름 확인
 
-`Tracing/04-Log-Trace-Correlation`은 폴더상 04번이지만 OpenTelemetry와 Tempo까지 보고 나서 보는 순서.
+`Tempo`와 `Jaeger`는 같은 Trace Backend 영역이라 둘 다 꼭 쓸 필요는 없음.
 
 ---
 
@@ -139,13 +155,19 @@ Monitoring
 1. [01. Tempo Overview](./Monitoring/Tempo/01-Overview)
 2. [02. Tempo Architecture](./Monitoring/Tempo/02-Architecture)
 
-## Grafana
+## Jaeger
 
-- [Grafana](./Monitoring/Grafana/Install)
+1. [01. Jaeger Overview](./Monitoring/Jaeger/01-Overview)
+2. [02. Jaeger Architecture](./Monitoring/Jaeger/02-Architecture)
 
 ## Kiali
 
-- [Kiali](./Monitoring/kiali/what-is-kiali)
+1. [01. Kiali Overview](./Monitoring/kiali/01-Overview)
+2. [02. Kiali Architecture](./Monitoring/kiali/02-Architecture)
+
+## Grafana
+
+- [Grafana Install](./Monitoring/Grafana/Install)
 
 ---
 
@@ -154,15 +176,33 @@ Monitoring
 ```text
 Application
    │
-   ├─ Metrics ───────────────→ Prometheus ─┐
-   │                                      │
-   ├─ JSON Log → Collector → Loki ────────┤
-   │                                      ├─→ Grafana
-   └─ OpenTelemetry                       │
-          ↓                               │
-      Trace / Span                        │
-          ↓                               │
-      OTel Collector → Tempo ─────────────┘
+   ├─ Metrics ───────────────→ Prometheus ───────────────┐
+   │                                                     │
+   ├─ JSON Log → Collector → Loki ───────────────────────┤
+   │                                                     ├─→ Grafana
+   └─ OpenTelemetry                                      │
+          ↓                                              │
+      Trace / Span                                       │
+          ↓                                              │
+      OTel Collector                                     │
+          ├─→ Tempo ─────────────────────────────────────┘
+          └─→ Jaeger → Jaeger UI
+```
+
+Istio 쪽은
+
+```text
+Service A
+   ↓
+Istio / Envoy
+   ↓
+Service B
+   ↓
+Prometheus Metric
+   ↓
+Kiali
+   ↓
+Service Graph / Traffic
 ```
 
 역할만 다시 보면
@@ -179,14 +219,17 @@ Collector
 Loki
   └─ Log 저장/검색
 
-Tempo
-  └─ Trace 저장/검색
+Tempo / Jaeger
+  └─ Trace 저장/조회
 
 Prometheus
   └─ Metric 수집/저장
 
 Grafana
   └─ Metric / Log / Trace 조회
+
+Kiali
+  └─ Istio Service Graph / Traffic 확인
 ```
 
 로그와 Trace에 같은 `trace_id`를 넣어 연결.
@@ -195,7 +238,7 @@ Grafana
 Prometheus
 "Latency 증가"
         ↓
-Tempo
+Tempo / Jaeger
 "AI → DB 구간이 느림"
         ↓
 Loki
