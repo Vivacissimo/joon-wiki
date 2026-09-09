@@ -1,5 +1,5 @@
 ---
-title: OpenTelemetry Collector
+title: 02. OpenTelemetry Collector
 description: OTel Collector의 수집과 전달 구조
 published: true
 date: 2026-09-09T10:00:00.000Z
@@ -8,7 +8,7 @@ editor: markdown
 dateCreated: 2026-09-09T10:00:00.000Z
 ---
 
-# OpenTelemetry Collector
+# 02. OpenTelemetry Collector
 
 ## 역할
 
