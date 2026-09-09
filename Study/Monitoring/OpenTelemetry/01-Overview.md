@@ -1,5 +1,5 @@
 ---
-title: OpenTelemetry Overview
+title: 01. OpenTelemetry Overview
 description: OpenTelemetry의 역할과 Telemetry 데이터 흐름
 published: true
 date: 2026-09-09T10:00:00.000Z
@@ -8,7 +8,7 @@ editor: markdown
 dateCreated: 2026-09-09T10:00:00.000Z
 ---
 
-# OpenTelemetry Overview
+# 01. OpenTelemetry Overview
 
 ## 역할
 
@@ -78,4 +78,4 @@ trace_id=abc123
 - OpenTelemetry: https://opentelemetry.io/docs/
 - Traces: https://opentelemetry.io/docs/concepts/signals/traces/
 
-다음: [OpenTelemetry Collector](/Monitoring/OpenTelemetry/02-Collector)
+다음: [02. OpenTelemetry Collector](/Monitoring/OpenTelemetry/02-Collector)
