@@ -1,7 +1,6 @@
 ---
 title: 01. Kiali Overview
 description: Istio Service Mesh 상태와 트래픽 확인
-authorized: false
 published: true
 date: 2026-09-09T12:04:00.000Z
 tags: monitoring, kiali, istio, service-mesh
