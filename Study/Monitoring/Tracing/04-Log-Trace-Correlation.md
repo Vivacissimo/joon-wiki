@@ -1,5 +1,5 @@
 ---
-title: Log Trace Correlation
+title: 04. Log Trace Correlation
 description: Loki 로그와 Tempo Trace를 Trace ID로 연결하는 방식
 published: true
 date: 2026-09-09T10:00:00.000Z
@@ -8,7 +8,7 @@ editor: markdown
 dateCreated: 2026-09-09T10:00:00.000Z
 ---
 
-# Log Trace Correlation
+# 04. Log Trace Correlation
 
 ## 목적
 
