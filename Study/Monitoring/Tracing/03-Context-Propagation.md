@@ -1,5 +1,5 @@
 ---
-title: Context Propagation
+title: 03. Context Propagation
 description: 서비스 간 Trace Context 전달 방식
 published: true
 date: 2026-09-09T10:00:00.000Z
@@ -8,7 +8,7 @@ editor: markdown
 dateCreated: 2026-09-09T10:00:00.000Z
 ---
 
-# Context Propagation
+# 03. Context Propagation
 
 ## 개념
 
@@ -75,4 +75,4 @@ Trace C → DB
 
 - OpenTelemetry Context Propagation: https://opentelemetry.io/docs/concepts/context-propagation/
 
-다음: [Log Trace Correlation](/Monitoring/Tracing/04-Log-Trace-Correlation)
+다음: [04. Log Trace Correlation](/Monitoring/Tracing/04-Log-Trace-Correlation)
