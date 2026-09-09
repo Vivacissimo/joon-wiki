@@ -1,5 +1,5 @@
 ---
-title: Loki Architecture
+title: 02. Loki Architecture
 description: Collector와 Loki, Grafana의 연결 구조
 published: true
 date: 2026-09-09T10:00:00.000Z
@@ -8,7 +8,7 @@ editor: markdown
 dateCreated: 2026-09-09T10:00:00.000Z
 ---
 
-# Loki Architecture
+# 02. Loki Architecture
 
 ## 기본 구조
 
