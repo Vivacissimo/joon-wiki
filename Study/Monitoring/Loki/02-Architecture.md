@@ -1,6 +1,6 @@
 ---
 title: 02. Loki Architecture
-description: Collector와 Loki, Grafana의 연결 구조
+description: Collector와 Loki, Grafana 연결 구조
 published: true
 date: 2026-09-09T10:00:00.000Z
 tags: monitoring, loki, architecture
@@ -24,16 +24,16 @@ Loki
 Grafana
 ```
 
-## 처리 단계
+## 처리 순서
 
-1. 애플리케이션이 stdout/stderr에 JSON 로그 출력
+1. 애플리케이션에서 JSON 로그 출력
 2. Kubernetes Node에 Container Log 생성
-3. Collector가 로그 파일을 읽음
-4. JSON 파싱 및 Kubernetes Metadata 추가
-5. Loki로 전달
-6. Grafana에서 Loki Data Source로 조회
+3. Collector가 로그 읽기
+4. JSON 파싱 + Kubernetes Metadata 추가
+5. Loki로 전송
+6. Grafana에서 조회
 
-## 예시 검색 기준
+## 로그 찾는 기준
 
 ```text
 service_name = backend
@@ -41,9 +41,9 @@ level = ERROR
 trace_id = abc123
 ```
 
-## 분산 추적과 연결
+## Tempo와 연결
 
-Loki 로그에 `trace_id`가 포함되어 있고 Tempo에도 동일한 Trace ID가 존재하면 Grafana에서 Log → Trace 연결 가능.
+Loki 로그와 Tempo Trace에 같은 `trace_id` 사용.
 
 ```text
 Loki
@@ -54,7 +54,7 @@ Tempo
 Trace abc123
 ```
 
-## 저장소 역할 구분
+## 데이터별 저장소
 
 | 데이터 | 저장소 |
 |---|---|
@@ -64,4 +64,8 @@ Trace abc123
 
 ## 참고
 
-- Loki Architecture: https://grafana.com/docs/loki/latest/get-started/architecture/
+- https://grafana.com/docs/loki/latest/get-started/architecture/
+
+## 다음
+
+- [01. Distributed Tracing Overview](../Tracing/01-Overview)
