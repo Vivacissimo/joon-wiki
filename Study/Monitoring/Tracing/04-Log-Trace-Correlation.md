@@ -1,6 +1,6 @@
 ---
 title: 04. Log Trace Correlation
-description: Loki 로그와 Tempo Trace를 Trace ID로 연결하는 방식
+description: Loki 로그와 Tempo Trace를 Trace ID로 연결
 published: true
 date: 2026-09-09T10:00:00.000Z
 tags: monitoring, tracing, loki, tempo, grafana
@@ -10,23 +10,23 @@ dateCreated: 2026-09-09T10:00:00.000Z
 
 # 04. Log Trace Correlation
 
-## 목적
+## 개념
 
-로그와 Trace를 따로 보는 것이 아니라 같은 요청을 기준으로 서로 연결해서 장애 원인을 찾는 구조.
+Log와 Trace를 같은 요청 기준으로 연결해서 보는 것.
 
-핵심 연결 값은 `trace_id`.
+연결 키 = `trace_id`
 
 ```text
 Loki Log
 trace_id=abc123
       ↕
 Tempo Trace
-Trace ID=abc123
+trace_id=abc123
 ```
 
 ## 예시
 
-Grafana에서 5xx 로그 발견.
+Grafana에서 ERROR 로그 확인.
 
 ```json
 {
@@ -49,7 +49,7 @@ POST /recommend        4.9s
    └─ DB Query         4.5s
 ```
 
-관련 AI 로그 확인.
+같은 요청의 로그 확인.
 
 ```text
 trace_id=abc123
@@ -57,55 +57,61 @@ WARN  pgvector slow query
 ERROR pgvector query timeout
 ```
 
-## 장애 분석 흐름
+## 장애 볼 때 흐름
 
 ```text
-Prometheus Metric
-"P95 Latency 증가"
+Prometheus
+P95 Latency 증가
         ↓
-Tempo Trace
-"DB Query 구간 4.5초"
+Tempo
+DB Query 4.5초
         ↓
-Loki Log
-"pgvector query timeout"
+Loki
+pgvector query timeout
 ```
 
-Metric은 `무슨 문제가 발생했는지`, Trace는 `어디에서 발생했는지`, Log는 `왜 발생했는지` 찾는 데 사용.
+```text
+Metric → 무슨 문제가 생겼나
+Trace  → 어디에서 생겼나
+Log    → 왜 생겼나
+```
 
-## 필요한 조건
+## 필요한 것
 
-### 로그
-
-JSON 로그에 Trace Context 포함.
+### Log
 
 ```text
 trace_id
 span_id
 ```
 
+JSON 로그에 포함.
+
 ### Trace
 
-OpenTelemetry를 통해 서비스 간 Context Propagation이 정상 동작해야 함.
+OpenTelemetry로 서비스 간 Context가 이어져 있어야 함.
 
 ### Grafana
 
-- Loki Data Source 연결
-- Tempo Data Source 연결
-- Loki의 trace_id에서 Tempo Trace로 이동할 수 있도록 연결
-- 필요하면 Tempo Span에서 관련 Loki 로그를 검색하도록 연결
+- Loki Data Source
+- Tempo Data Source
+- Log의 `trace_id` → Tempo Trace 연결
+- Tempo Span → 관련 Loki Log 연결
 
-## 최종 확인 화면
-
-최소 검증 목표
+## 확인 순서
 
 1. Grafana에서 ERROR 로그 선택
-2. 로그의 `trace_id` 확인
-3. 동일 Trace를 Tempo에서 열기
-4. Backend → AI → DB Span 흐름 확인
-5. 특정 Span과 관련된 로그 조회
+2. `trace_id` 확인
+3. 같은 Trace를 Tempo에서 열기
+4. Backend → AI → DB Span 확인
+5. 해당 Span 관련 로그 확인
 
-이 흐름이 동작하면 로그 수집과 분산 추적의 상관관계가 연결된 상태로 볼 수 있음.
+여기까지 연결되면 로그 수집 + 분산 추적 상관관계 확인 가능.
 
 ## 참고
 
-- Grafana Tempo Trace Visualization: https://grafana.com/docs/tempo/latest/visualize-traces/
+- https://grafana.com/docs/tempo/latest/visualize-traces/
+
+## 다음
+
+- [Grafana](../Grafana/Install)
