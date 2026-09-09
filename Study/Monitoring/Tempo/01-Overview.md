@@ -1,5 +1,5 @@
 ---
-title: Tempo Overview
+title: 01. Tempo Overview
 description: Grafana Tempo의 역할과 분산 추적 저장 구조
 published: true
 date: 2026-09-09T10:00:00.000Z
@@ -8,7 +8,7 @@ editor: markdown
 dateCreated: 2026-09-09T10:00:00.000Z
 ---
 
-# Tempo Overview
+# 01. Tempo Overview
 
 ## 역할
 
@@ -74,4 +74,4 @@ Trace ID=abc123
 
 - Grafana Tempo: https://grafana.com/docs/tempo/latest/
 
-다음: [Tempo Architecture](/Monitoring/Tempo/02-Architecture)
+다음: [02. Tempo Architecture](/Monitoring/Tempo/02-Architecture)
