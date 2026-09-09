@@ -1,5 +1,5 @@
 ---
-title: Structured JSON Log
+title: 03. Structured JSON Log
 description: 공통 JSON 로그 포맷과 필드 구성
 published: true
 date: 2026-09-09T10:00:00.000Z
@@ -8,7 +8,7 @@ editor: markdown
 dateCreated: 2026-09-09T10:00:00.000Z
 ---
 
-# Structured JSON Log
+# 03. Structured JSON Log
 
 ## 왜 JSON으로 남기는가
 
@@ -117,4 +117,4 @@ Tempo Trace ID=abc123
 
 동일한 Trace ID를 통해 Grafana에서 로그와 Trace를 연결.
 
-다음: [Log Collection Pipeline](/Monitoring/Logging/04-Collection-Pipeline)
+다음: [04. Log Collection Pipeline](/Monitoring/Logging/04-Collection-Pipeline)
