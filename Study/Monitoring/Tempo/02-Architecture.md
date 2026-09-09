@@ -1,5 +1,5 @@
 ---
-title: Tempo Architecture
+title: 02. Tempo Architecture
 description: Trace 데이터 흐름과 Grafana 연동 구조
 published: true
 date: 2026-09-09T10:00:00.000Z
@@ -8,7 +8,7 @@ editor: markdown
 dateCreated: 2026-09-09T10:00:00.000Z
 ---
 
-# Tempo Architecture
+# 02. Tempo Architecture
 
 ## 기본 구조
 
