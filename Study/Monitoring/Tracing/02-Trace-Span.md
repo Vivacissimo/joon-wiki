@@ -1,6 +1,6 @@
 ---
 title: 02. Trace and Span
-description: Trace와 Span의 관계
+description: Trace와 Span 관계
 published: true
 date: 2026-09-09T10:00:00.000Z
 tags: monitoring, tracing, span
@@ -12,9 +12,7 @@ dateCreated: 2026-09-09T10:00:00.000Z
 
 ## Trace
 
-하나의 요청 전체 흐름.
-
-예시
+요청 하나의 전체 흐름.
 
 ```text
 사용자 상품 추천 요청
@@ -25,10 +23,10 @@ AI
         ↓
 Database
         ↓
-응답 반환
+응답
 ```
 
-이 전체 요청에 하나의 `trace_id`가 부여됨.
+이 전체 요청에 하나의 `trace_id` 사용.
 
 ```text
 trace_id = abc123
@@ -36,7 +34,7 @@ trace_id = abc123
 
 ## Span
 
-Trace 내부의 개별 작업 단위.
+Trace 안의 작업 단위.
 
 ```text
 Trace abc123
@@ -47,13 +45,13 @@ POST /recommend
 └─ PostgreSQL Query
 ```
 
-각 구간은 별도의 `span_id`를 가짐.
+각 Span은 자기 `span_id`를 가짐.
 
-## 관계
+## 차이
 
 ```text
 Trace = 요청 전체
-Span  = 요청을 구성하는 각 작업
+Span  = 요청 안의 각 작업
 ```
 
 예시
@@ -67,11 +65,11 @@ POST /recommend          3.2s
 └─ DB Query              2.7s
 ```
 
-이 구조를 보면 어느 구간에서 시간이 오래 걸렸는지 확인 가능.
+이걸 보고 어느 구간에서 시간이 많이 걸렸는지 확인.
 
 ## 로그와 연결
 
-애플리케이션 로그에 현재 Trace와 Span 정보를 넣으면 특정 로그가 어떤 요청의 어느 작업에서 발생했는지 연결 가능.
+로그에도 현재 Trace / Span 값 기록.
 
 ```json
 {
@@ -82,4 +80,6 @@ POST /recommend          3.2s
 }
 ```
 
-다음: [03. Context Propagation](/Monitoring/Tracing/03-Context-Propagation)
+## 다음
+
+- [03. Context Propagation](./03-Context-Propagation)
