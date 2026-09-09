@@ -1,5 +1,5 @@
 ---
-title: Log Collection Pipeline
+title: 04. Log Collection Pipeline
 description: Kubernetes 로그 수집 흐름과 구성 요소
 published: true
 date: 2026-09-09T10:00:00.000Z
@@ -8,7 +8,7 @@ editor: markdown
 dateCreated: 2026-09-09T10:00:00.000Z
 ---
 
-# Log Collection Pipeline
+# 04. Log Collection Pipeline
 
 ## 전체 흐름
 
@@ -114,4 +114,4 @@ labels
 → Grafana
 ```
 
-다음: [Loki Overview](/Monitoring/Loki/01-Overview)
+다음: [01. Loki Overview](/Monitoring/Loki/01-Overview)
