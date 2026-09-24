@@ -15,3 +15,4 @@ Mac의 개발 환경과 설정을 관리한다.
 ## Terminal
 
 - [iTerm2](./macOS/iTerm2)
+- [Vim](./macOS/Vim)
