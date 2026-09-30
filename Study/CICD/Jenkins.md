@@ -547,3 +547,278 @@ GitHub Push / Merge
 - Kubernetes Agent
 - Jenkins 동적 Agent
 - Jenkins vs GitHub Actions
+
+
+---
+
+## GitHub App 기반 GitOps PR Auto Merge
+
+GitOps Repository의 이미지 태그 변경 PR을 Jenkins에서 자동 생성하고 자동 Merge하는 구성.
+
+### 목적
+
+일반 사용자 PR의 Review 정책은 유지하면서 Jenkins가 생성한 GitOps PR만 자동 Merge한다.
+
+사용자 PAT를 사용하면 PR 생성과 Auto Merge 요청의 주체가 개인 계정이 된다.
+
+```text
+Jenkins
+  ↓
+User PAT
+  ↓
+GitOps PR 생성
+  ↓
+Ruleset Review 조건 적용
+  ↓
+승인 대기
+```
+
+GitHub App을 Jenkins 전용 인증 주체로 사용하고 Ruleset Bypass 대상에 등록한다.
+
+```text
+Jenkins
+  ↓
+GitHub App Credential
+  ↓
+Installation Access Token
+  ↓
+GitOps Branch Push
+  ↓
+PR 생성
+  ↓
+Auto Merge 활성화
+  ↓
+Ruleset Bypass
+  ↓
+Merge
+  ↓
+ArgoCD Sync
+```
+
+<br>
+
+### GitHub App
+
+프로젝트에서는 Jenkins GitOps 자동화 전용 GitHub App을 사용한다.
+
+```text
+moongcheap-jenkins-ci
+```
+
+주요 Repository 권한
+
+- Metadata: Read
+- Checks: Read / Write
+- Contents: Read / Write
+- Commit statuses: Read / Write
+- Pull requests: Read / Write
+
+GitHub App은 Organization에 설치하고 필요한 Repository에 접근 권한을 부여한다.
+
+<br>
+
+### Ruleset Bypass
+
+`develop` Branch 보호 Ruleset에 GitHub App을 Bypass 대상으로 등록한다.
+
+```text
+Ruleset
+└─ protect-develop
+   ├─ Target: develop
+   └─ Bypass
+      └─ moongcheap-jenkins-ci
+         └─ Always allow
+```
+
+Bypass는 자동 Merge 기능 자체가 아니다.
+
+GitHub App이 Ruleset의 Review 조건 등을 통과할 수 있게 하는 설정이다.
+
+따라서 Jenkinsfile에서 PR 생성 후 Auto Merge 요청까지 실행해야 한다.
+
+<br>
+
+### Jenkins Credential
+
+기존에는 사용자 PAT Credential을 사용했다.
+
+```text
+gitops-repo-push
+└─ User PAT
+```
+
+이 경우 GitHub에서 작업 주체를 사용자로 인식하기 때문에 GitHub App에 설정한 Bypass가 적용되지 않는다.
+
+GitHub App의 App ID와 Private Key를 Jenkins Credential에 등록한다.
+
+```text
+Kind: GitHub App
+ID: moongcheap-jenkins-ci
+```
+
+Private Key는 GitHub App에서 생성한 `.pem` 파일의 전체 내용을 사용한다.
+
+Private Key는 Repository나 Jenkinsfile에 직접 저장하지 않는다.
+
+<br>
+
+### Jenkinsfile Credential
+
+GitHub App Credential은 Pipeline에서 `usernamePassword`로 가져온다.
+
+```groovy
+withCredentials([
+    usernamePassword(
+        credentialsId: 'moongcheap-jenkins-ci',
+        usernameVariable: 'GIT_USER',
+        passwordVariable: 'GIT_TOKEN'
+    )
+]) {
+    // GitOps 작업
+}
+```
+
+Jenkins가 GitHub App Credential을 이용해 Installation Access Token을 발급하고 `GIT_TOKEN`으로 전달한다.
+
+이 Token으로 다음 작업을 처리한다.
+
+- GitOps Repository Clone
+- 임시 Branch Push
+- Pull Request 생성
+- Auto Merge 활성화
+- PR Merge 상태 확인
+- Merge 후 임시 Branch 삭제
+
+<br>
+
+### PR 생성
+
+Jenkins에서 이미지 태그 변경 후 임시 Branch를 Push한다.
+
+```text
+ci/update-{service}-{image-tag}-{build-number}
+```
+
+이 Branch를 기준으로 GitOps PR을 생성한다.
+
+```text
+ci/update-backend-develop-xxxxxxx-10
+        ↓
+Pull Request
+        ↓
+develop
+```
+
+API 인증은 GitHub App Installation Token을 사용한다.
+
+```bash
+-H "Authorization: Bearer ${GIT_TOKEN}"
+```
+
+<br>
+
+### Auto Merge
+
+PR 생성 후 GraphQL의 `enablePullRequestAutoMerge`를 호출한다.
+
+```graphql
+mutation {
+  enablePullRequestAutoMerge(
+    input: {
+      pullRequestId: "PR_NODE_ID"
+      mergeMethod: SQUASH
+    }
+  ) {
+    pullRequest {
+      number
+      autoMergeRequest {
+        enabledAt
+      }
+    }
+  }
+}
+```
+
+이 설정으로 PR이 Merge 가능한 상태가 되면 자동으로 Squash Merge된다.
+
+현재 구성에서는 `moongcheap-jenkins-ci`가 Ruleset Bypass 대상이므로 Jenkins가 생성한 GitOps PR은 별도 사용자 Review 없이 처리할 수 있다.
+
+<br>
+
+### Merge 완료 확인
+
+Jenkins는 Auto Merge 활성화 후 PR 상태를 반복 확인한다.
+
+현재 구성
+
+```text
+MAX_RETRIES=30
+RETRY_INTERVAL=10초
+```
+
+최대 약 5분 동안 Merge 완료 여부를 확인한다.
+
+Merge가 완료되면 임시 Branch를 삭제한다.
+
+```text
+PR Merged
+   ↓
+Temporary Branch Delete
+   ↓
+GitOps Repository develop 변경
+   ↓
+ArgoCD 변경 감지
+   ↓
+Kubernetes Sync
+```
+
+<br>
+
+### 전체 흐름
+
+```text
+Application develop Merge
+        ↓
+      Jenkins
+        ↓
+   Build / Test
+        ↓
+  Container Build
+        ↓
+     ECR Push
+        ↓
+GitOps Image Tag 변경
+        ↓
+Temporary Branch Push
+        ↓
+    PR 생성
+        ↓
+Auto Merge 활성화
+        ↓
+moongcheap-jenkins-ci
+Ruleset Bypass
+        ↓
+   Squash Merge
+        ↓
+Temporary Branch 삭제
+        ↓
+     ArgoCD
+        ↓
+   Kubernetes
+```
+
+<br>
+
+### 확인 포인트
+
+자동 Merge가 되지 않을 경우 아래 순서로 확인한다.
+
+1. Jenkins가 사용하는 Credential이 사용자 PAT인지 GitHub App인지 확인
+2. GitHub App이 대상 Repository에 설치되어 있는지 확인
+3. GitHub App의 Contents / Pull requests 권한 확인
+4. 대상 Branch Ruleset의 Bypass list 확인
+5. Jenkins 로그에서 PR 생성 성공 여부 확인
+6. Auto Merge GraphQL 요청 성공 여부 확인
+7. PR의 작업 주체가 GitHub App으로 기록되는지 확인
+
+핵심은 **GitHub App을 설치하는 것만으로 자동 Merge되는 것이 아니라 Jenkins가 실제 GitHub App Credential로 API를 호출해야 한다는 점**이다.
