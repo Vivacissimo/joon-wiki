@@ -2,8 +2,10 @@
 title: Etc
 description: 기타 기기 및 생활 정보 정리
 published: true
+date: 2026-10-21T08:41:00.000Z
 tags: etc
 editor: markdown
+dateCreated: 2026-10-20T13:09:23.000Z
 ---
 
 # Etc
