@@ -12,4 +12,4 @@ editor: markdown
 
 ## 분류
 
-- [Casio](./Etc/Casio.md) — CASIO 전자시계 사용법
+- [Casio](/en/Etc/Casio) — CASIO 전자시계 사용법
