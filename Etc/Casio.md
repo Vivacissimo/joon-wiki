@@ -2,8 +2,10 @@
 title: Casio
 description: CASIO 기기 사용법
 published: true
+date: 2026-10-21T08:41:00.000Z
 tags: casio,clock
 editor: markdown
+dateCreated: 2026-10-20T13:09:25.000Z
 ---
 
 # Casio
