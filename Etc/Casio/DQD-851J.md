@@ -2,8 +2,10 @@
 title: CASIO DQD-851J
 description: 전파 디지털 시계 시간 설정, 알람, 전파 수신, 버튼 설명
 published: true
+date: 2026-10-21T08:41:00.000Z
 tags: casio,dqd-851j,clock,manual
 editor: markdown
+dateCreated: 2026-10-20T13:10:56.000Z
 ---
 
 # CASIO DQD-851J
