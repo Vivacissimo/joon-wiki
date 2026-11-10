@@ -11,6 +11,10 @@ dateCreated: 2026-06-08T06:31:16.316Z
 # Amazon Web Services?
 <br>
 
+## 자격증
+
+- [AWS 자격증](/en/Study/AWS/Certification)
+
 ## 1. AWS란?
 
 **AWS**는 **Amazon Web Services**의 약자이다.
